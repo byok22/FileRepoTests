@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Xunit;
 using FilesApi.Domain.Entities;
-using FilesApi.Infrastructure.Persistansce.StoreProcedureRepo;
+using FilesApi.Infrastructure.Persistance.StoreProcedureRepo;
+using FilesApi.Application.ProductivityRepository;
+using FilesApi.WebApi.Controllers.Services;
 
 namespace TestWebApi
 {
@@ -15,7 +17,11 @@ namespace TestWebApi
     {
          private readonly IDbConnect _dbConnectA;
 
+          private ProductivityRepo _repository;
+
          private StoreProceduresRepo _storeProceduresRepo;
+
+         private readonly ProductivityServices _service ;
         public DatabaseTests()
         {
              // Configurar el servicio IDbConnectA en el contenedor de servicios
@@ -29,12 +35,16 @@ namespace TestWebApi
             _dbConnectA = serviceProvider.GetRequiredService<IDbConnect>();
 
              _storeProceduresRepo = new StoreProceduresRepo(_dbConnectA);
+
+             _repository = new ProductivityRepo(_dbConnectA);
+
+             this._service = new ProductivityServices(_dbConnectA);
         }
         private const string ConnectionTE_MESApi = "Data Source=MXGDLM0OTSQLV2A;Initial Catalog=TE_MESApi;Persist Security Info=True;User ID=EngSWUser;Password=EnGswUs3r19!;TrustServerCertificate=true;";
         
         
         [Fact]
-        public void up_GetDebugAndRepairByHour()
+        public async Task up_GetDebugAndRepairByHourAsync()
         {
            DateTime pDatetime = new DateTime(2023, 6, 1);
             int pShift = 2; // Cambiar el valor del shift según sea necesario
@@ -44,40 +54,15 @@ namespace TestWebApi
             int pPCBAFamilyID = 0;
             int PositionType = 0;
             
-            var items = _storeProceduresRepo.up_GetDebugAndRepairByHour(new DateTime(2023,6,1),1,0,81,0,0,0);                
+            var items = await _service.GetDebugRepairEmployeesHour(new DateTime(2023,6,1),1,0,81,0,0,0);                
 
             List<DebugRepairEmployeesHour> result = items;
 
             // Convertir el objeto a JSON utilizando Newtonsoft.Json
-            string jsonData = JsonConvert.SerializeObject(result);
-
-            // Deserializar el JSON a un objeto Result
-            DebugRepairEmployeesHour deserializedResult = JsonConvert.DeserializeObject<DebugRepairEmployeesHour>(jsonData);
-
-            // Acceder a los valores de los elementos de datos
-            
-            Console.WriteLine("Number: " + deserializedResult.Number);
-            Console.WriteLine("Name: " + deserializedResult.Name);
-            Console.WriteLine("Position: " + deserializedResult.Position);
-            Console.WriteLine("ZoneName: " + deserializedResult.ZoneName);
-            Console.WriteLine("Shift: " + deserializedResult.Shift);
-            Console.WriteLine("HourlyGoal: " + deserializedResult.HourlyGoal);
-            Console.WriteLine("HourlyCounts:");
-            foreach (KeyValuePair<int, int> hourlyCount in deserializedResult.HourlyCounts)
-            {
-                Console.WriteLine(hourlyCount.Key + ": " + hourlyCount.Value);
-            }
-            Console.WriteLine("GrandTotal: " + deserializedResult.GrandTotal);
-            Console.WriteLine("Productivity: " + deserializedResult.Productivity);
-            Console.WriteLine("Effy: " + deserializedResult.Effy);
-            Console.WriteLine();
-            
-
-            Console.WriteLine(jsonData);
+            string jsonData = JsonConvert.SerializeObject(result);                    
                                    
-            }
-        
-              
+        }
+                      
         [Fact]
         public void MesApiConectionTest()
         {           
