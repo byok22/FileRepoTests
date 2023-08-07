@@ -88,7 +88,7 @@ namespace TestWebApi
         [Fact]
         public async Task up_GetDebugAndRepairByCustomer()
         {
-            DateTime pDatetime = new DateTime(2023, 5, 17);
+            DateTime pDatetime = new DateTime(2023, 7, 14);
             //int pShift = 2; // Cambiar el valor del shift según sea necesario
             int pBuildingID = 0;
             int debugRepairType=1;
