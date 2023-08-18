@@ -191,6 +191,29 @@ namespace TestWebApi
             }
         }
 
+        [Fact]    
+        public async Task GetCustomersWithDivision()
+        {
+           
+            // Act
+              List<DropDown> selects = await _infraRepo.Up_GetCustomersWithDivision();
+            //List<DropDown> selects = await _service.GetPositionTypes();
+
+            // Assert
+            Assert.NotNull(selects);
+            Assert.NotEmpty(selects);
+            //Assert.Equal(2, selects.Count);
+
+            foreach (var item in selects)
+            {
+                Assert.False(string.IsNullOrEmpty(item.id));
+                Assert.False(string.IsNullOrEmpty(item.text));
+            }
+        }
+
+
+        
+
         
     }
 }
