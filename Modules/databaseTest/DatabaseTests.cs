@@ -9,7 +9,8 @@ using FilesApi.Domain.Entities;
 using FilesApi.Infrastructure.Persistance.StoreProcedureRepo;
 using FilesApi.Application.ProductivityRepository;
 using FilesApi.WebApi.Controllers.Services;
-
+using FilesApi.Domain.Entities.Utilities;
+using FilesApi.Infrastructure.Helpers;
 namespace TestWebApi
 {
    
@@ -85,6 +86,25 @@ namespace TestWebApi
                                    
         }
 
+          [Fact]
+        public async Task up_GetTestVsAnalisysGeneralTest()
+        {
+            DateTime pDatetime = new DateTime(2023, 8, 23);
+            int pShift = 1;
+             int pCustomerID = 29;
+             int type =1;
+            int pBuildingID = 0;
+            var items =  _storeProceduresRepo.up_GetTestVsAnalisysGeneral(pDatetime,pCustomerID,1,pShift,type);                
+
+           // var items = await  _service.GetDebugRepairEmployeesDay(pDatetime,pBuildingID,pCustomerID,pAreaID,pPCBAFamilyID,PositionType);                
+
+            List<TestAnalisysDebugRepairGeneral> result = items;
+
+            // Convertir el objeto a JSON utilizando Newtonsoft.Json
+            string jsonData = JsonConvert.SerializeObject(result);                    
+                                   
+        }
+
         [Fact]
         public async Task up_GetDebugAndRepairByCustomer()
         {
@@ -93,14 +113,14 @@ namespace TestWebApi
             int pBuildingID = 0;
             int debugRepairType=1;
             
-            var items =  _storeProceduresRepo.up_GetDebugAndRepairByCustomer(pDatetime,pBuildingID,debugRepairType);                
+            DebugRepairCustomersandTotals items =  _storeProceduresRepo.up_GetDebugAndRepairByCustomer(pDatetime,pBuildingID,debugRepairType);                
 
            // var items = await  _service.GetDebugRepairEmployeesDay(pDatetime,pBuildingID,pCustomerID,pAreaID,pPCBAFamilyID,PositionType);                
 
-            List<DebugRepairCustomers> result = items;
+        
 
             // Convertir el objeto a JSON utilizando Newtonsoft.Json
-            string jsonData = JsonConvert.SerializeObject(result);                    
+            string jsonData = JsonConvert.SerializeObject(items);                    
                                    
         }
                       

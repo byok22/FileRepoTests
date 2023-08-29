@@ -43,7 +43,7 @@ namespace TestWebApi.Modules.WebServiceTest
            int customerID = 68;
            string serialNumber="JMX2249A22W";
 
-           var testHistory =  _mesTisRepo.GetSerialHistory(customerID,serialNumber);
+           var testHistory =  _mesTisRepo.GetSerialHistoryDT(customerID,serialNumber);
 
            List<TestResultDetails> testDetails = new List<TestResultDetails>();
 
