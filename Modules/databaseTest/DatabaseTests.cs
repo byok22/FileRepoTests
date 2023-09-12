@@ -94,14 +94,14 @@ namespace TestWebApi
              int pCustomerID = 29;
              int type =1;
             int pBuildingID = 0;
-            var items =  _storeProceduresRepo.up_GetTestVsAnalisysGeneral(pDatetime,pCustomerID,1,pShift,type);                
+            //var items =  _storeProceduresRepo.up_GetTestVsAnalisysGeneral(pDatetime,pCustomerID,1,pShift,type);                
 
            // var items = await  _service.GetDebugRepairEmployeesDay(pDatetime,pBuildingID,pCustomerID,pAreaID,pPCBAFamilyID,PositionType);                
 
-            List<TestAnalisysDebugRepairGeneral> result = items;
+           // List<TestAnalisysDebugRepairGeneral> result = items;
 
             // Convertir el objeto a JSON utilizando Newtonsoft.Json
-            string jsonData = JsonConvert.SerializeObject(result);                    
+          //  string jsonData = JsonConvert.SerializeObject(result);                    
                                    
         }
 
@@ -123,7 +123,68 @@ namespace TestWebApi
             string jsonData = JsonConvert.SerializeObject(items);                    
                                    
         }
-                      
+
+        [Fact]
+        public async Task GetAssembledTest()
+        {
+            DateTime pDatetime = new DateTime(2023, 8, 14);
+            int pShift = 2; // Cambiar el valor del shift según sea necesario
+            string pTestRouteStep = "Birth,Ensamble Display,Ensamble Display Manual,ENSAMBLE TERMINALES,Link PCB,Pace Line,Soldado Manual";
+            string pEquipment = "";
+            int customerID=29;
+            int frecuency=1;
+            
+            AssembledAndTotals items =  _storeProceduresRepo.up_GetAssembled(pDatetime,customerID,frecuency,pShift,pTestRouteStep,pEquipment);                
+
+           // var items = await  _service.GetDebugRepairEmployeesDay(pDatetime,pBuildingID,pCustomerID,pAreaID,pPCBAFamilyID,PositionType);                
+
+        
+
+            // Convertir el objeto a JSON utilizando Newtonsoft.Json
+            string jsonData = JsonConvert.SerializeObject(items);                    
+                                   
+        }
+
+         [Fact]
+        public async Task GetTestMonitor()
+        {
+       
+            string pTestRouteStep = "FVT";
+            string pEquipment = "";
+            int customerID=4;
+          
+            List<TestMonitor> items =  _storeProceduresRepo.Up_GetMonitoy_TestDashd_V2(customerID,pTestRouteStep,pEquipment);                
+
+           // var items = await  _service.GetDebugRepairEmployeesDay(pDatetime,pBuildingID,pCustomerID,pAreaID,pPCBAFamilyID,PositionType);                
+
+        
+
+            // Convertir el objeto a JSON utilizando Newtonsoft.Json
+            string jsonData = JsonConvert.SerializeObject(items);                    
+                                   
+        }
+        
+         [Fact]
+        public async Task GetTestMonitorDefectsTest()
+        {
+       
+            string pTestRouteStep = "FVT";
+            string pEquipment = "";
+            int customerID=4;
+          
+            List<TestMonitorDefectBreakDown> items =  _storeProceduresRepo.Up_GetMonitorDefectBreakDownd_TestDashd(customerID,pTestRouteStep,pEquipment);                
+
+           // var items = await  _service.GetDebugRepairEmployeesDay(pDatetime,pBuildingID,pCustomerID,pAreaID,pPCBAFamilyID,PositionType);                
+
+        
+
+            // Convertir el objeto a JSON utilizando Newtonsoft.Json
+            string jsonData = JsonConvert.SerializeObject(items);                    
+                                   
+        }
+
+
+
         [Fact]
         public void MesApiConectionTest()
         {           
