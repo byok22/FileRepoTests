@@ -70,5 +70,26 @@ namespace TestWebApi.Modules.WebServiceTest
 
            
         }
+
+         [Fact]
+        public void GetOkTest()
+        {
+           int customerID = 43;
+           string serialNumber="FFC233704805";
+
+           string  AssemblyNumber="";
+
+           string TesterName = "MY13500225FDL";
+           string ProcessStep= "AOI_T";
+
+           var testHistory =  _mesTisRepo.GetOkToTest(customerID,serialNumber, AssemblyNumber,TesterName, ProcessStep);
+
+           
+            
+          
+         
+
+           
+        }
     }
 }

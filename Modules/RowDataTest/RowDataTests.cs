@@ -63,5 +63,26 @@ namespace TestWebApi
             string jsonData = JsonConvert.SerializeObject(result);                    
                                    
         }
+
+        [Fact]
+        public async Task Up_GetTestRowData()
+        {
+            
+            DateTime DateStart = new DateTime(2023, 9, 14);
+            DateTime DateEnd = new DateTime(2023, 9, 14);
+            string pTestRouteStep = "FVT";
+            int CustomerID = 29;
+
+           
+            var items =  _rowDataRepo.Up_GetTestRowData(DateStart,DateEnd,CustomerID, pTestRouteStep);                
+
+            List<TestRowData> result = items;
+
+            // Convertir el objeto a JSON utilizando Newtonsoft.Json
+            string jsonData = JsonConvert.SerializeObject(result);                    
+                                   
+        }
+
+        
     }
 }
