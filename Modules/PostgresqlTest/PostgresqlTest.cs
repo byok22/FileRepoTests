@@ -49,7 +49,7 @@ namespace TestWebApi.Modules.PostgresqlTest
             
            
           
-            var result =  _InfraRepo.GetParametricsInfo("865zzsb097", "raj_cit");     
+            var result =  _InfraRepo.GetParametricsInfo(123);     
         }
 
         

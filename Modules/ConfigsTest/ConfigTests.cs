@@ -7,6 +7,7 @@ using FilesApi.Domain.Entities.Configs;
 using Microsoft.Data.SqlClient;
 using FilesApi.Infrastructure.Persistance.ConfigRepo;
 using Microsoft.Extensions.DependencyInjection;
+using FilesApi.Domain.Entities.Catalogs;
 
 namespace TestWebApi.Modules.ConfigsTest
 {
@@ -127,6 +128,53 @@ namespace TestWebApi.Modules.ConfigsTest
 
            
         }
+
+       [Fact]
+        public async Task CRUD_DepartmentTestAsync()
+        {
+            
+            // Agregar un departamento
+            int addedPKDepartment = await _infraRepo.Up_AddDepartment("Nuevo Departamento", true);
+
+            // Asegúrate de que se haya agregado correctamente
+            Assert.True(addedPKDepartment > 0);
+
+            // Obtener el departamento recién agregado
+            Department addedDepartment = await _infraRepo.Up_GetDepartmentByPK(addedPKDepartment);
+
+            // Asegúrate de que se haya encontrado el departamento
+            Assert.NotNull(addedDepartment);
+
+            // Actualizar el departamento
+            string updatedDescription = "Departamento Actualizado";
+            bool updatedAvailable = false;
+
+            string updateResult = await _infraRepo.Up_UpdateDepartment(addedPKDepartment, updatedDescription, updatedAvailable);
+
+            // Asegúrate de que la actualización sea exitosa
+            Assert.Equal("Department updated successfully", updateResult);
+
+            // Obtener el departamento actualizado
+            Department updatedDepartment = await _infraRepo.Up_GetDepartmentByPK(addedPKDepartment);
+
+            // Asegúrate de que el departamento se haya actualizado correctamente
+            Assert.NotNull(updatedDepartment);
+            Assert.Equal(updatedDescription, updatedDepartment.Description);
+            Assert.False(updatedDepartment.Available); // Modificado para verificar que no está disponible
+
+            // Eliminar el departamento
+            string deleteResult = await _infraRepo.Up_DeleteDepartment(addedPKDepartment);
+
+            // Asegúrate de que la eliminación sea exitosa
+            Assert.Equal("Department deleted successfully", deleteResult);
+
+            // Intentar obtener el departamento eliminado
+            Department deletedDepartment = await _infraRepo.Up_GetDepartmentByPK(addedPKDepartment);
+
+            // Asegúrate de que el departamento se haya eliminado (debe ser null)
+            Assert.Null(deletedDepartment);
+        }
+
 
 
         
