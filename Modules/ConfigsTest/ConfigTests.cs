@@ -8,6 +8,8 @@ using Microsoft.Data.SqlClient;
 using FilesApi.Infrastructure.Persistance.ConfigRepo;
 using Microsoft.Extensions.DependencyInjection;
 using FilesApi.Domain.Entities.Catalogs;
+using FilesApi.Infrastructure.Entities;
+using FilesApi.Domain.Entities;
 
 namespace TestWebApi.Modules.ConfigsTest
 {
@@ -132,12 +134,21 @@ namespace TestWebApi.Modules.ConfigsTest
        [Fact]
         public async Task CRUD_DepartmentTestAsync()
         {
+            Department department = new Department();    
             
-            // Agregar un departamento
-            int addedPKDepartment = await _infraRepo.Up_AddDepartment("Nuevo Departamento", true);
+            department.Available= true;
+            department.Description="New Department";
 
-            // Asegúrate de que se haya agregado correctamente
-            Assert.True(addedPKDepartment > 0);
+            
+
+
+             DepartmentResult addResult = await _infraRepo.Up_AddDepartment(department);
+
+            Assert.NotNull(addResult);
+            Assert.True(!string.IsNullOrEmpty(addResult.Message));
+            Assert.True(addResult.PKDepartment > 0);
+
+            var addedPKDepartment=addResult.PKDepartment;
 
             // Obtener el departamento recién agregado
             Department addedDepartment = await _infraRepo.Up_GetDepartmentByPK(addedPKDepartment);
@@ -173,6 +184,44 @@ namespace TestWebApi.Modules.ConfigsTest
 
             // Asegúrate de que el departamento se haya eliminado (debe ser null)
             Assert.Null(deletedDepartment);
+        }
+
+        
+        [Fact]
+        public async Task AddTestRouteStepByDepartmentTestAsync()
+        {
+            int fkDepartment = 1; // Reemplaza con el valor deseado
+            int fkTestRouteStep = 2; // Reemplaza con el valor deseado
+
+            ResultMsgID result = await _infraRepo.Up_AddTestRouteStepByDepartment(fkDepartment, fkTestRouteStep);
+
+            Assert.NotNull(result);
+            Assert.Equal("TestRouteStepByDepartment added successfully", result.Message);
+            Assert.True(result.Id > 0);
+        }
+
+        [Fact]
+        public async Task UpdateTestRouteStepByDepartmentTestAsync()
+        {
+            int pkTestRouteStepByDepartment = 1; // Reemplaza con el valor del registro que deseas actualizar
+            int fkDepartment = 3; // Reemplaza con el nuevo valor
+            int fkTestRouteStep = 4; // Reemplaza con el nuevo valor
+
+            ResultMsgID result = await _infraRepo.Up_UpdateTestRouteStepByDepartment(pkTestRouteStepByDepartment, fkDepartment, fkTestRouteStep);
+
+            Assert.Equal("TestRouteStepByDepartment updated successfully", result.Message);
+            Assert.Equal(pkTestRouteStepByDepartment, result.Id);
+        }
+
+        [Fact]
+        public async Task DeleteTestRouteStepByDepartmentTestAsync()
+        {
+            int pkTestRouteStepByDepartment = 1; // Reemplaza con el valor del registro que deseas eliminar
+
+            ResultMsgID result = await _infraRepo.Up_DeleteTestRouteStepByDepartment(pkTestRouteStepByDepartment);
+
+            Assert.Equal("TestRouteStepByDepartment deleted successfully", result.Message);
+            Assert.Equal(pkTestRouteStepByDepartment, result.Id);
         }
 
 
