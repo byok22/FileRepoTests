@@ -10,6 +10,8 @@ using FilesApi.Infrastructure.Persistance.DropDownsRepo;
 using FilesApi.Application.ProductivityRepository;
 using FilesApi.WebApi.Controllers.Services;
 using FilesApi.Application.DropDownsRepository;
+using FilesApi.Application.ConfigRepository;
+using FilesApi.Infrastructure.Persistance.ConfigRepo;
 
 namespace TestWebApi
 {
@@ -21,11 +23,18 @@ namespace TestWebApi
 
         private readonly DropDownsRepo _infraRepo;
 
+        private readonly ConfigRepo _infraRepoConfig;
+
+        
+
        
 
        private readonly IDbConnect _dbConnectA;
 
        private readonly DropDownsRepository _appRepository;
+
+        private readonly ConfigRepository _configRepository;
+
 
        private readonly DropDownsService _service;
 
@@ -44,10 +53,14 @@ namespace TestWebApi
 
             _infraRepo = new DropDownsRepo(_dbConnectA);
 
+            _infraRepoConfig = new ConfigRepo(_dbConnectA);
+
 
             _appRepository = new DropDownsRepository(_infraRepo);
 
-            _service = new DropDownsService(_appRepository);
+             _configRepository = new ConfigRepository(_infraRepoConfig);
+
+            _service = new DropDownsService(_appRepository, _configRepository);
            
         }
 
